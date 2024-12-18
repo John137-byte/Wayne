@@ -1,30 +1,17 @@
 /* General Styling */
-
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
-    z-index: -1; /* Keeps the overlay behind all content */
-}
-
 body {
     margin: 0;
     font-family: Helvetica, Arial, sans-serif;
-    background-image: url('Web Image.avif'); /* Use the image from the root folder */
-    background-size: cover; /* Ensures the image covers the entire viewport */
-    background-position: center; /* Centers the image */
-    background-attachment: fixed; /* Keeps the image fixed when scrolling */
-    color: #333;
+    background-image: url('Web Image.avif'); /* Background image */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: #f4f4f4; /* Light text for better visibility */
     line-height: 1.6;
 }
 
-
 header {
-    background: #000;
+    background: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
     color: white;
     text-align: center;
     padding: 1.5rem 0;
@@ -37,70 +24,80 @@ h1, h2 {
 main {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start; /* Align content to the left */
+    justify-content: flex-start;
     padding: 2rem;
+    max-width: 800px; /* Limits content width */
+    margin: 0 auto; /* Centers the main container */
 }
 
 section {
-    margin: 2rem 0;
+    margin: 1.5rem 0;
     width: 100%;
-    max-width: 600px;
-    text-align: center;
+}
+
+h2 {
+    font-size: 1.5rem;
+    color: #fff; /* Ensure titles are visible */
+}
+
+/* Notes Section Styling */
+#note-section {
+    background: rgba(0, 0, 0, 0.7); /* Dark background with transparency */
+    padding: 1rem;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: #fff; /* White background */
+    color: #333; /* Dark text for visibility */
+}
+
+/* File Upload Styling */
+#upload-section {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 1rem;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+input[type="file"] {
+    display: block;
+    margin-top: 0.5rem;
+    color: #fff; /* Ensures file input text is visible */
 }
 
 button {
-    background: #000;
+    background: #007bff; /* Bright blue for better visibility */
     color: white;
     border: none;
     padding: 0.75rem 1.5rem;
     cursor: pointer;
     font-size: 1rem;
     border-radius: 5px;
+    margin-top: 0.5rem;
 }
 
 button:hover {
-    background: #444;
-}
-
-input[type="file"] {
-    margin-top: 1rem;
+    background: #0056b3;
 }
 
 footer {
-    background: #000;
+    background: rgba(0, 0, 0, 0.8);
     color: white;
     text-align: center;
     padding: 0.75rem 0;
     position: fixed;
     bottom: 0;
     width: 100%;
-}
-
-/* Left-align the note-taking section */
-#note-section {
-    text-align: left; /* Align content to the left */
-    margin: 2rem auto; /* Center horizontally with margins */
-    width: 90%; /* Make it responsive */
-    max-width: 800px; /* Set a maximum width */
-}
-
-/* Update textarea to align with the left-aligned layout */
-#note-section textarea {
-    display: block; /* Behaves like a block element */
-    margin: 0; /* Remove default margins */
-    padding: 1rem;
-    width: 100%; /* Full width of the container */
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    resize: none;
-    box-sizing: border-box; /* Ensures padding doesn't affect width */
-}
-
-/* Responsive tweaks */
-@media (max-width: 768px) {
-    #note-section {
-        width: 95%; /* Adjust width for smaller screens */
-    }
 }
