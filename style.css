@@ -1,11 +1,16 @@
 /* General Styling */
+
 body {
     margin: 0;
     font-family: Helvetica, Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-image: url('Web Image.avif'); /* Use the image from the root folder */
+    background-size: cover; /* Ensures the image covers the entire viewport */
+    background-position: center; /* Centers the image */
+    background-attachment: fixed; /* Keeps the image fixed when scrolling */
     color: #333;
     line-height: 1.6;
 }
+
 
 header {
     background: #000;
