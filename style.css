@@ -33,17 +33,6 @@ section {
     text-align: center;
 }
 
-textarea {
-    width: 100%;
-    height: 150px;
-    padding: 1rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 1rem;
-    resize: none;
-}
-
 button {
     background: #000;
     color: white;
@@ -81,14 +70,21 @@ footer {
 }
 
 /* Update textarea to align with the left-aligned layout */
-textarea {
-    display: block; /* Ensures it behaves like a block element */
-    margin: 0; /* Remove default margin */
+#note-section textarea {
+    display: block; /* Behaves like a block element */
+    margin: 0; /* Remove default margins */
     padding: 1rem;
-    width: 100%; /* Full width within the container */
+    width: 100%; /* Full width of the container */
     font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 5px;
     resize: none;
+    box-sizing: border-box; /* Ensures padding doesn't affect width */
 }
 
+/* Responsive tweaks */
+@media (max-width: 768px) {
+    #note-section {
+        width: 95%; /* Adjust width for smaller screens */
+    }
+}
