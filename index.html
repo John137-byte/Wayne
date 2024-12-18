@@ -3,20 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Customized Static Web App</title>
+    <title>Minimalistic Notes App</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Header -->
     <header>
-        <h1>Welcome to My Customized Web App!</h1>
+        <h1>My Minimalistic Notes App</h1>
     </header>
+
+    <!-- Main Content -->
     <main>
-        <p>This is my first static website hosted on Azure. 🚀</p>
-        <p>More customization coming soon!</p>
-        <a href="https://azure.microsoft.com/en-us/services/app-service/static/">Learn about Azure Static Web Apps</a>
+        <!-- Note-taking Section -->
+        <section id="note-section">
+            <h2>Take Notes 📝</h2>
+            <textarea id="note-area" placeholder="Write your notes here..."></textarea>
+            <button onclick="saveNote()">Save Note</button>
+            <p id="save-message"></p>
+        </section>
+
+        <!-- File Upload Section -->
+        <section id="upload-section">
+            <h2>Upload Files 📂</h2>
+            <input type="file" id="file-input" accept=".doc, .docx, .txt" />
+            <p id="file-message">No file uploaded yet.</p>
+        </section>
     </main>
+
+    <!-- Footer -->
     <footer>
-        <p>© 2024 My Static Site | Built with ❤️ and Azure</p>
+        <p>© 2024 Minimalistic Notes App</p>
     </footer>
+
+    <!-- Script -->
+    <script src="script.js"></script>
 </body>
 </html>
