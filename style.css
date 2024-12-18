@@ -71,3 +71,24 @@ footer {
     bottom: 0;
     width: 100%;
 }
+
+/* Left-align the note-taking section */
+#note-section {
+    text-align: left; /* Align content to the left */
+    margin: 2rem auto; /* Center horizontally with margins */
+    width: 90%; /* Make it responsive */
+    max-width: 800px; /* Set a maximum width */
+}
+
+/* Update textarea to align with the left-aligned layout */
+textarea {
+    display: block; /* Ensures it behaves like a block element */
+    margin: 0; /* Remove default margin */
+    padding: 1rem;
+    width: 100%; /* Full width within the container */
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none;
+}
+
