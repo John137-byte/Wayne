@@ -1,33 +1,37 @@
-// Connection string securely provided by your Azure environment
-const AZURE_STORAGE_CONNECTION_STRING = "your_connection_string_here"; // Replace with your actual connection string
-
-// Azure Blob Service setup
+// Azure Blob Storage connection
+const connectionString = "your_connection_string_here"; // Replace with your actual connection string
 const { BlobServiceClient } = window.AzureStorageBlob;
+const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
 
-// Initialize BlobServiceClient
-const blobServiceClient = BlobServiceClient.fromConnectionString(AZURE_STORAGE_CONNECTION_STRING);
+// Containers
+const notesContainer = blobServiceClient.getContainerClient("notesupdates");
+const filesContainer = blobServiceClient.getContainerClient("filesupdates");
 
-// Function to upload a note to the "notesupdates" container
-async function uploadNote() {
+// Current Date Helper
+const getCurrentDate = () => new Date().toISOString().split("T")[0];
+
+// Save Note
+async function saveNote() {
     const noteContent = document.getElementById("noteInput").value;
     if (!noteContent) {
         alert("Please write a note first!");
         return;
     }
-
-    const containerClient = blobServiceClient.getContainerClient("notesupdates");
-    const blobName = `note_${new Date().toISOString()}.txt`; // Save with a timestamp
-    const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+    const date = getCurrentDate();
+    const blobName = `${date}/note_${new Date().toISOString()}.txt`;
+    const blockBlobClient = notesContainer.getBlockBlobClient(blobName);
 
     try {
         await blockBlobClient.upload(noteContent, noteContent.length);
-        document.getElementById("statusMessage").innerText = `Note "${blobName}" uploaded successfully!`;
+        alert("Note saved successfully!");
+        document.getElementById("noteInput").value = "";
+        loadNotes(); // Refresh notes for today
     } catch (error) {
-        console.error("Error uploading note:", error);
+        console.error("Error saving note:", error);
     }
 }
 
-// Function to upload a file to the "filesupdates" container
+// Upload File
 async function uploadFile() {
     const fileInput = document.getElementById("fileInput");
     const file = fileInput.files[0];
@@ -35,19 +39,81 @@ async function uploadFile() {
         alert("Please select a file first!");
         return;
     }
-
-    const containerClient = blobServiceClient.getContainerClient("filesupdates");
-    const blockBlobClient = containerClient.getBlockBlobClient(file.name);
+    const date = getCurrentDate();
+    const blobName = `${date}/${file.name}`;
+    const blockBlobClient = filesContainer.getBlockBlobClient(blobName);
 
     try {
         const data = await file.arrayBuffer();
         await blockBlobClient.upload(data, data.byteLength);
-        document.getElementById("statusMessage").innerText = `File "${file.name}" uploaded successfully!`;
+        alert("File uploaded successfully!");
+        fileInput.value = "";
+        loadFiles(); // Refresh files for today
     } catch (error) {
         console.error("Error uploading file:", error);
     }
 }
 
-// Attach event listeners to buttons
-document.getElementById("uploadNoteButton").addEventListener("click", uploadNote);
+// Load Notes for Today
+async function loadNotes() {
+    const notesList = document.getElementById("notesList");
+    notesList.innerHTML = "";
+    const date = getCurrentDate();
+
+    for await (const blob of notesContainer.listBlobsFlat()) {
+        if (blob.name.startsWith(date)) {
+            const noteItem = document.createElement("li");
+            noteItem.textContent = blob.name.split("/")[1];
+            notesList.appendChild(noteItem);
+        }
+    }
+}
+
+// Load Files for Today
+async function loadFiles() {
+    const filesList = document.getElementById("filesList");
+    filesList.innerHTML = "";
+    const date = getCurrentDate();
+
+    for await (const blob of filesContainer.listBlobsFlat()) {
+        if (blob.name.startsWith(date)) {
+            const fileItem = document.createElement("li");
+            fileItem.textContent = blob.name.split("/")[1];
+            filesList.appendChild(fileItem);
+        }
+    }
+}
+
+// View All Notes
+async function viewAllNotes() {
+    const notesList = document.getElementById("notesList");
+    notesList.innerHTML = "";
+
+    for await (const blob of notesContainer.listBlobsFlat()) {
+        const noteItem = document.createElement("li");
+        noteItem.textContent = blob.name;
+        notesList.appendChild(noteItem);
+    }
+}
+
+// View All Files
+async function viewAllFiles() {
+    const filesList = document.getElementById("filesList");
+    filesList.innerHTML = "";
+
+    for await (const blob of filesContainer.listBlobsFlat()) {
+        const fileItem = document.createElement("li");
+        fileItem.textContent = blob.name;
+        filesList.appendChild(fileItem);
+    }
+}
+
+// Attach Event Listeners
+document.getElementById("uploadNoteButton").addEventListener("click", saveNote);
 document.getElementById("uploadFileButton").addEventListener("click", uploadFile);
+document.getElementById("viewAllNotesButton").addEventListener("click", viewAllNotes);
+document.getElementById("viewAllFilesButton").addEventListener("click", viewAllFiles);
+
+// Load notes and files for today on page load
+loadNotes();
+loadFiles();
