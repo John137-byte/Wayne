@@ -1,15 +1,8 @@
-// Azure Blob Storage connection
-const connectionString = process.env.AZURE_STORAGE_CONNECTION_STRING || "your_connection_string_here";
+// Azure Blob Storage connection using SAS token
+const blobSasUrl = "https://wesbsiteupdatesstorage.blob.core.windows.net/?sv=2022-11-02&ss=bfqt&srt=co&sp=rwdlacupiytfx&se=2025-12-20T01:18:33Z&st=2024-12-19T17:18:33Z&spr=https,http&sig=PxQVxO26iCepXQOhVONFs%2Bc9edxKdLqNDVgUqs6p38Y%3D"; // Use your SAS URL here
+const blobServiceClient = new BlobServiceClient(blobSasUrl);
 
-if (!connectionString) {
-    console.error("Connection string is not defined! Please check your environment variables.");
-}
-
-// Azure Blob Service setup
-const { BlobServiceClient } = window.AzureStorageBlob;
-const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
-
-// Correct container names
+// Containers
 const notesContainer = blobServiceClient.getContainerClient("notesdata");
 const filesContainer = blobServiceClient.getContainerClient("filesdata");
 
@@ -113,30 +106,6 @@ async function loadFiles() {
     }
 }
 
-// View All Notes
-async function viewAllNotes() {
-    const notesList = document.getElementById("notesList");
-    notesList.innerHTML = "";
-
-    for await (const blob of notesContainer.listBlobsFlat()) {
-        const noteItem = document.createElement("li");
-        noteItem.textContent = blob.name;
-        notesList.appendChild(noteItem);
-    }
-}
-
-// View All Files
-async function viewAllFiles() {
-    const filesList = document.getElementById("filesList");
-    filesList.innerHTML = "";
-
-    for await (const blob of filesContainer.listBlobsFlat()) {
-        const fileItem = document.createElement("li");
-        fileItem.textContent = blob.name;
-        filesList.appendChild(fileItem);
-    }
-}
-
 // Utility to convert a readable stream to text
 async function streamToText(readableStream) {
     const reader = readableStream.getReader();
@@ -161,12 +130,3 @@ document.getElementById("viewAllFilesButton").addEventListener("click", viewAllF
 // Load notes and files for today on page load
 loadNotes();
 loadFiles();
-
-// Azure Blob Storage connection using SAS token
-const blobSasUrl = "https://wesbsiteupdatesstorage.blob.core.windows.net/?sv=2022-11-02&ss=bfqt&srt=co&sp=rwdlacupiytfx&se=2025-12-20T01:18:33Z&st=2024-12-19T17:18:33Z&spr=https,http&sig=PxQVxO26iCepXQOhVONFs%2Bc9edxKdLqNDVgUqs6p38Y%3D"; // Use your SAS URL here
-const blobServiceClient = new BlobServiceClient(blobSasUrl);
-
-// Containers
-const notesContainer = blobServiceClient.getContainerClient("notesdata");
-const filesContainer = blobServiceClient.getContainerClient("filesdata");
-
