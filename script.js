@@ -161,3 +161,12 @@ document.getElementById("viewAllFilesButton").addEventListener("click", viewAllF
 // Load notes and files for today on page load
 loadNotes();
 loadFiles();
+
+// Azure Blob Storage connection using SAS token
+const blobSasUrl = "https://wesbsiteupdatesstorage.blob.core.windows.net/?sv=2022-11-02&ss=bfqt&srt=co&sp=rwdlacupiytfx&se=2025-12-20T01:03:07Z&st=2024-12-19T17:03:07Z&spr=https,http&sig=YbVKag3mmzPdulQJnrHHBmk6kTCyNziQ25LvA2RFSMA%3D"; // Use your SAS URL here
+const blobServiceClient = new BlobServiceClient(blobSasUrl);
+
+// Containers
+const notesContainer = blobServiceClient.getContainerClient("notesdata");
+const filesContainer = blobServiceClient.getContainerClient("filesdata");
+
