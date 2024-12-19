@@ -29,7 +29,6 @@ async function saveNote() {
 
     try {
         console.log("Uploading note:", noteContent);
-        console.log("Blob name:", blobName);
         await blockBlobClient.upload(noteContent, noteContent.length);
         alert("Note saved successfully!");
         document.getElementById("noteInput").value = "";
@@ -53,7 +52,6 @@ async function uploadFile() {
 
     try {
         console.log("Uploading file:", file.name);
-        console.log("Blob name:", blobName);
         const data = await file.arrayBuffer();
         await blockBlobClient.upload(data, data.byteLength);
         alert("File uploaded successfully!");
@@ -74,6 +72,18 @@ async function loadNotes() {
         if (blob.name.startsWith(date)) {
             const noteItem = document.createElement("li");
             noteItem.textContent = blob.name.split("/")[1];
+
+            // Add a button to view the content of the note
+            const viewButton = document.createElement("button");
+            viewButton.textContent = "View";
+            viewButton.onclick = async () => {
+                const blockBlobClient = notesContainer.getBlockBlobClient(blob.name);
+                const downloadResponse = await blockBlobClient.download();
+                const downloadedContent = await streamToText(downloadResponse.readableStreamBody);
+                alert(`Note Content:\n\n${downloadedContent}`);
+            };
+
+            noteItem.appendChild(viewButton);
             notesList.appendChild(noteItem);
         }
     }
@@ -89,6 +99,15 @@ async function loadFiles() {
         if (blob.name.startsWith(date)) {
             const fileItem = document.createElement("li");
             fileItem.textContent = blob.name.split("/")[1];
+
+            // Add a download link to the file
+            const downloadLink = document.createElement("a");
+            downloadLink.textContent = "Download";
+            downloadLink.href = filesContainer.getBlockBlobClient(blob.name).url;
+            downloadLink.target = "_blank";
+            downloadLink.style.marginLeft = "10px";
+
+            fileItem.appendChild(downloadLink);
             filesList.appendChild(fileItem);
         }
     }
@@ -118,6 +137,21 @@ async function viewAllFiles() {
     }
 }
 
+// Utility to convert a readable stream to text
+async function streamToText(readableStream) {
+    const reader = readableStream.getReader();
+    let result = "";
+    let done = false;
+    while (!done) {
+        const { value, done: readerDone } = await reader.read();
+        done = readerDone;
+        if (value) {
+            result += new TextDecoder().decode(value);
+        }
+    }
+    return result;
+}
+
 // Attach Event Listeners
 document.getElementById("uploadNoteButton").addEventListener("click", saveNote);
 document.getElementById("uploadFileButton").addEventListener("click", uploadFile);
@@ -125,54 +159,5 @@ document.getElementById("viewAllNotesButton").addEventListener("click", viewAllN
 document.getElementById("viewAllFilesButton").addEventListener("click", viewAllFiles);
 
 // Load notes and files for today on page load
-// Load Notes for Today
-async function loadNotes() {
-    const notesList = document.getElementById("notesList");
-    notesList.innerHTML = "";
-    const date = getCurrentDate();
-
-    for await (const blob of notesContainer.listBlobsFlat()) {
-        if (blob.name.startsWith(date)) {
-            const noteItem = document.createElement("li");
-            noteItem.textContent = blob.name.split("/")[1];
-
-            // Add a button to view the content of the note
-            const viewButton = document.createElement("button");
-            viewButton.textContent = "View";
-            viewButton.onclick = async () => {
-                const blockBlobClient = notesContainer.getBlockBlobClient(blob.name);
-                const downloadedContent = await blockBlobClient.downloadToBlob();
-                const text = await downloadedContent.text();
-                alert(`Note Content:\n\n${text}`);
-            };
-
-            noteItem.appendChild(viewButton);
-            notesList.appendChild(noteItem);
-        }
-    }
-}
-
-// Load Files for Today
-async function loadFiles() {
-    const filesList = document.getElementById("filesList");
-    filesList.innerHTML = "";
-    const date = getCurrentDate();
-
-    for await (const blob of filesContainer.listBlobsFlat()) {
-        if (blob.name.startsWith(date)) {
-            const fileItem = document.createElement("li");
-            fileItem.textContent = blob.name.split("/")[1];
-
-            // Add a download link to the file
-            const downloadLink = document.createElement("a");
-            downloadLink.textContent = "Download";
-            downloadLink.href = await filesContainer.getBlockBlobClient(blob.name).url;
-            downloadLink.target = "_blank";
-            downloadLink.style.marginLeft = "10px";
-
-            fileItem.appendChild(downloadLink);
-            filesList.appendChild(fileItem);
-        }
-    }
-}
-
+loadNotes();
+loadFiles();
