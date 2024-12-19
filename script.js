@@ -125,5 +125,54 @@ document.getElementById("viewAllNotesButton").addEventListener("click", viewAllN
 document.getElementById("viewAllFilesButton").addEventListener("click", viewAllFiles);
 
 // Load notes and files for today on page load
-loadNotes();
-loadFiles();
+// Load Notes for Today
+async function loadNotes() {
+    const notesList = document.getElementById("notesList");
+    notesList.innerHTML = "";
+    const date = getCurrentDate();
+
+    for await (const blob of notesContainer.listBlobsFlat()) {
+        if (blob.name.startsWith(date)) {
+            const noteItem = document.createElement("li");
+            noteItem.textContent = blob.name.split("/")[1];
+
+            // Add a button to view the content of the note
+            const viewButton = document.createElement("button");
+            viewButton.textContent = "View";
+            viewButton.onclick = async () => {
+                const blockBlobClient = notesContainer.getBlockBlobClient(blob.name);
+                const downloadedContent = await blockBlobClient.downloadToBlob();
+                const text = await downloadedContent.text();
+                alert(`Note Content:\n\n${text}`);
+            };
+
+            noteItem.appendChild(viewButton);
+            notesList.appendChild(noteItem);
+        }
+    }
+}
+
+// Load Files for Today
+async function loadFiles() {
+    const filesList = document.getElementById("filesList");
+    filesList.innerHTML = "";
+    const date = getCurrentDate();
+
+    for await (const blob of filesContainer.listBlobsFlat()) {
+        if (blob.name.startsWith(date)) {
+            const fileItem = document.createElement("li");
+            fileItem.textContent = blob.name.split("/")[1];
+
+            // Add a download link to the file
+            const downloadLink = document.createElement("a");
+            downloadLink.textContent = "Download";
+            downloadLink.href = await filesContainer.getBlockBlobClient(blob.name).url;
+            downloadLink.target = "_blank";
+            downloadLink.style.marginLeft = "10px";
+
+            fileItem.appendChild(downloadLink);
+            filesList.appendChild(fileItem);
+        }
+    }
+}
+
