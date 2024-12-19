@@ -123,3 +123,49 @@ document.getElementById("viewAllFilesButton").addEventListener("click", viewAllF
 // Load notes and files for today on page load
 loadNotes();
 loadFiles();
+
+async function saveNote() {
+    const noteContent = document.getElementById("noteInput").value;
+    if (!noteContent) {
+        alert("Please write a note first!");
+        return;
+    }
+    const date = getCurrentDate();
+    const blobName = `${date}/note_${new Date().toISOString()}.txt`;
+    const blockBlobClient = notesContainer.getBlockBlobClient(blobName);
+
+    try {
+        console.log("Uploading note:", noteContent);
+        console.log("Blob name:", blobName);
+        await blockBlobClient.upload(noteContent, noteContent.length);
+        alert("Note saved successfully!");
+        loadNotes(); // Refresh notes for today
+    } catch (error) {
+        console.error("Error saving note:", error.message);
+    }
+}
+
+async function uploadFile() {
+    const fileInput = document.getElementById("fileInput");
+    const file = fileInput.files[0];
+    if (!file) {
+        alert("Please select a file first!");
+        return;
+    }
+    const date = getCurrentDate();
+    const blobName = `${date}/${file.name}`;
+    const blockBlobClient = filesContainer.getBlockBlobClient(blobName);
+
+    try {
+        console.log("Uploading file:", file.name);
+        console.log("Blob name:", blobName);
+        const data = await file.arrayBuffer();
+        await blockBlobClient.upload(data, data.byteLength);
+        alert("File uploaded successfully!");
+        loadFiles(); // Refresh files for today
+    } catch (error) {
+        console.error("Error uploading file:", error.message);
+    }
+}
+
+
