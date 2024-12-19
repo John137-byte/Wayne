@@ -6,6 +6,69 @@
     <title>Minimalistic Notes & Files App</title>
     <script src="https://cdn.jsdelivr.net/npm/@azure/storage-blob@12.12.0/dist/index.browser.min.js"></script>
     <script src="script.js" defer></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            text-align: center;
+            padding: 20px;
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        section {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+
+        textarea, input[type="file"], button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            margin: 5px 0;
+            padding: 10px;
+            background: #e0e0e0;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     <h1>Notes and Files Manager</h1>
@@ -31,24 +94,3 @@
     </section>
 </body>
 </html>
-
-<!-- Notes Section -->
-<section>
-    <h2>Notes</h2>
-    <textarea id="noteInput" placeholder="Write your note here..."></textarea>
-    <button id="uploadNoteButton">Save Note</button>
-    <p><strong>Notes for Today:</strong></p>
-    <ul id="notesList"></ul>
-    <p><button id="viewAllNotesButton">View All Notes</button></p>
-</section>
-
-<!-- Files Section -->
-<section>
-    <h2>Files</h2>
-    <input type="file" id="fileInput" />
-    <button id="uploadFileButton">Upload File</button>
-    <p><strong>Files for Today:</strong></p>
-    <ul id="filesList"></ul>
-    <p><button id="viewAllFilesButton">View All Files</button></p>
-</section>
-
