@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minimalistic Notes App</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@azure/storage-blob@12.12.0/dist/index.browser.min.js"></script>
+
 </head>
 <body>
     <!-- Header -->
@@ -37,5 +39,18 @@
 
     <!-- Script -->
     <script src="script.js"></script>
+
+    <h1>Upload Notes and Files</h1>
+
+<!-- For Notes -->
+<textarea id="noteInput" placeholder="Write your note here"></textarea>
+<button id="uploadNoteButton">Upload Note</button>
+
+<!-- For Files -->
+<input type="file" id="fileInput" />
+<button id="uploadFileButton">Upload File</button>
+
+<div id="statusMessage"></div>
+
 </body>
 </html>
