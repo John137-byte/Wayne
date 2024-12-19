@@ -163,7 +163,7 @@ loadNotes();
 loadFiles();
 
 // Azure Blob Storage connection using SAS token
-const blobSasUrl = "https://wesbsiteupdatesstorage.blob.core.windows.net/?sv=2022-11-02&ss=bfqt&srt=co&sp=rwdlacupiytfx&se=2025-12-20T01:03:07Z&st=2024-12-19T17:03:07Z&spr=https,http&sig=YbVKag3mmzPdulQJnrHHBmk6kTCyNziQ25LvA2RFSMA%3D"; // Use your SAS URL here
+const blobSasUrl = "https://wesbsiteupdatesstorage.blob.core.windows.net/?sv=2022-11-02&ss=bfqt&srt=co&sp=rwdlacupiytfx&se=2025-12-20T01:18:33Z&st=2024-12-19T17:18:33Z&spr=https,http&sig=PxQVxO26iCepXQOhVONFs%2Bc9edxKdLqNDVgUqs6p38Y%3D"; // Use your SAS URL here
 const blobServiceClient = new BlobServiceClient(blobSasUrl);
 
 // Containers
