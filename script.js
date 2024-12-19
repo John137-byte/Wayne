@@ -1,5 +1,11 @@
 // Azure Blob Storage connection
-const connectionString = "your_connection_string_here"; // Replace with your actual connection string
+// Use the environment variable to get the connection string
+const connectionString = process.env.AZURE_STORAGE_CONNECTION_STRING;
+
+if (!connectionString) {
+    console.error("Connection string is not defined! Please check your environment variables.");
+}
+ // Replace with your actual connection string
 const { BlobServiceClient } = window.AzureStorageBlob;
 const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
 
