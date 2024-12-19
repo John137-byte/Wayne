@@ -3,54 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minimalistic Notes App</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Minimalistic Notes & Files App</title>
     <script src="https://cdn.jsdelivr.net/npm/@azure/storage-blob@12.12.0/dist/index.browser.min.js"></script>
-
+    <script src="script.js" defer></script>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <h1>My Minimalistic Notes App</h1>
-    </header>
+    <h1>Notes and Files Manager</h1>
 
-    <!-- Main Content -->
-    <main>
-        <!-- Note-taking Section -->
-        <section id="note-section">
-            <h2>Take Notes 📝</h2>
-            <textarea id="note-area" placeholder="Write your notes here..."></textarea>
-            <button onclick="saveNote()">Save Note</button>
-            <p id="save-message"></p>
-        </section>
+    <!-- Notes Section -->
+    <section>
+        <h2>Notes</h2>
+        <textarea id="noteInput" placeholder="Write your note here..."></textarea>
+        <button id="uploadNoteButton">Save Note</button>
+        <p><strong>Notes for Today:</strong></p>
+        <ul id="notesList"></ul>
+        <p><button id="viewAllNotesButton">View All Notes</button></p>
+    </section>
 
-        <!-- File Upload Section -->
-        <section id="upload-section">
-            <h2>Upload Files 📂</h2>
-            <input type="file" id="file-input" accept=".doc, .docx, .txt" />
-            <p id="file-message">No file uploaded yet.</p>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer>
-        <p>© 2024 Minimalistic Notes App</p>
-    </footer>
-
-    <!-- Script -->
-    <script src="script.js"></script>
-
-    <h1>Upload Notes and Files</h1>
-
-<!-- For Notes -->
-<textarea id="noteInput" placeholder="Write your note here"></textarea>
-<button id="uploadNoteButton">Upload Note</button>
-
-<!-- For Files -->
-<input type="file" id="fileInput" />
-<button id="uploadFileButton">Upload File</button>
-
-<div id="statusMessage"></div>
-
+    <!-- File Upload Section -->
+    <section>
+        <h2>Files</h2>
+        <input type="file" id="fileInput" />
+        <button id="uploadFileButton">Upload File</button>
+        <p><strong>Files for Today:</strong></p>
+        <ul id="filesList"></ul>
+        <p><button id="viewAllFilesButton">View All Files</button></p>
+    </section>
 </body>
 </html>
